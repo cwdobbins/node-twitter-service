@@ -1,6 +1,6 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {environment} from 'environments/environment';
+import {HttpClient, HttpHeaders} from 'node-angular-http-client';
+import {Injectable} from 'injection-js';
+import {environment} from '../environments/environment';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 

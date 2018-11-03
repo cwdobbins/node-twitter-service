@@ -1,0 +1,20 @@
+{
+  "name": "node-twitter-service",
+  "version": "1.0.0",
+  "description": "Node service that acts as a Rest API server backend for interfacing with the Twitter 1.1 API",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christopher Dobbins",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^10.12.2",
+    "express": "^4.16.4",
+    "injection-js": "^2.2.1",
+    "minimist": "^1.2.0",
+    "node-angular-http-client": "^1.1.7",
+    "rxjs": "^6.3.3",
+    "typescript": "^3.1.6"
+  }
+}

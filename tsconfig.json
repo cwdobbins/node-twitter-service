@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "es2016",
+    "target": "es2015",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-//    "module": "commonjs",
+    "module": "commonjs",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true // ,
-//    "typeRoots": [
-//      "node_modules/@types"
-//    ]
+    "experimentalDecorators": true
   },
   "lib": [
     "es2017"
@@ -20,5 +17,5 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ] 
 }

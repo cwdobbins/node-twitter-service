@@ -1,6 +1,6 @@
 export const environment = {
     twitterApiBaseUrl: 'https://api.twitter.com',
-    twitterAppKey: '',
-    twitterAppSecretKey: '',
+    twitterAppKey: '<twitter-app-api-key',
+    twitterAppSecretKey: '<twitter-app-secret-key>',
     defaultTweetCount: 30
 };

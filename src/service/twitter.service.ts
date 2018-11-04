@@ -1,59 +1,24 @@
-import {HttpClient, HttpHeaders} from 'node-angular-http-client';
-import {Injectable} from 'injection-js';
+import {Injectable, ReflectiveInjector} from 'injection-js';
 import {environment} from '../environments/environment';
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-
-export class TwitterUser {
-    public description: string;
-    public id: number;
-    public name: string;
-    public location: string;
-    public avatarUrl: string;
-    public handle: string;
-
-    constructor(user: any) {
-        this.description = user.description;
-        this.id = user.id;
-        this.name = user.name;
-        this.location = user.location;
-        this.avatarUrl = user.profile_image_url;
-        this.handle = user.screen_name;
-    }
-}
-
-export class Tweet {
-    public created: string;
-    public likes: number;
-    public id: string;
-    public text: string;
-    public truncated; boolean;
-    public user: TwitterUser;
-    public entities: any;
-
-    constructor(twitterData: any) {
-        this.created = twitterData.created_at;
-        this.likes = twitterData.favorite_count;
-        this.id = twitterData.id_str;
-        this.text = twitterData.text;
-        this.truncated = twitterData.truncated;
-        this.user = new TwitterUser(twitterData.user);
-        this.entities = twitterData.entities;
-    }
-}
+import {Http} from './authentication.service';
 
 @Injectable()
 export class TwitterService {
-    private timelineUrl = `${environment.twitterApiBaseUrl}/1.1/statuses/user_timeline.json`;
+    constructor(private http: Http) {}
 
-    constructor(private http: HttpClient) {
-        this.getTweets(environment.twitterAccount, 1);
-    }
-
-    public getTweets(username: string, count: number): Observable<Tweet[]> {
-        return this.http.get(`${this.timelineUrl}?screen_name=${username}&count=${count}&exclude_replies=true&include_rts=true`).pipe(
-            map((data: []) => data.map(it => new Tweet(it)))
-        );
+    public getTweets(username: string, count: number): Observable<any[]> {
+        let url = `${environment.twitterApiBaseUrl}/1.1/statuses/user_timeline.json?screen_name=${username}&count=${count}&exclude_replies=true&include_rts=true`;
+        console.log(`Retrieve ${count} most recent tweets for @${username}`);
+        return Observable.create(observer => {
+            console.log('Sending request', url);
+            this.http.service.get(url)
+                .then(response => response.data)
+                .then(tweets => {
+                    observer.next(tweets);
+                    observer.complete();
+                })
+                .catch(error => observer.error('Could not retrieve tweets'))
+        });
     }
 }
-

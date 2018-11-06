@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import axios from 'axios';
+import * as cache from 'memory-cache';
 import {environment} from '../environments/environment';
 import {Injectable} from 'injection-js';
 
@@ -17,7 +18,8 @@ export class Http {
 
 class Authenticator {
     private authOptions: any;
-    private cachedToken: string;
+    private mongo: any;
+    private cache = new cache.Cache();
 
     constructor(private httpService: any) {
         let basicAuthKey = Buffer.from(`${environment.twitterAppKey}:${environment.twitterAppSecretKey}`).toString('base64');
@@ -40,12 +42,12 @@ class Authenticator {
     }
 
     public getToken() {
-        if (this.cachedToken) {
-            return Promise.resolve(this.cachedToken);
+        if (this.cache.get('authToken')) {
+            return Promise.resolve(this.cache.get('authToken'));
         }
         return this.httpService(this.authOptions).then(
             response => {
-                this.cachedToken = response.data.access_token;
+                this.cache.put('authToken', response.data.access_token, 86400000);
                 return response.data.access_token;
             }
         ).catch(error => {

@@ -11,7 +11,7 @@ node dist --port=(port)
 
 
 # Running with Docker
-- make sure you have docker installed on your system
+- make sure you have docker installed on your system (sudo apt install docker.io)
 - Edit config.ts.sample to add your twitter app keys
 - docker build -t node-twitter-service .
 - docker run -d -p (port-to-run-on):8000 node-twitter-service

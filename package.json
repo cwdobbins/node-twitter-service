@@ -1,5 +1,9 @@
 {
   "name": "node-twitter-service",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cwdobbins/node-twitter-service.git"
+  },
   "version": "1.0.0",
   "description": "Node service that acts as a Rest API server backend for interfacing with the Twitter 1.1 API",
   "main": "index.ts",

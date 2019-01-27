@@ -8,7 +8,7 @@
   "description": "Node service that acts as a Rest API server backend for interfacing with the Twitter 1.1 API",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "cp config.ts src/environments/environment.ts; tsc",
     "start": "cp config.ts src/environments/environment.ts; node dist"
   },
   "author": "Christopher Dobbins",

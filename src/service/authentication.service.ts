@@ -15,14 +15,12 @@ export class Http {
     }
 }
 
-
 class Authenticator {
     private authOptions: any;
-    private mongo: any;
     private cache = new cache.Cache();
 
     constructor(private httpService: any) {
-        let basicAuthKey = Buffer.from(`${environment.twitterAppKey}:${environment.twitterAppSecretKey}`).toString('base64');
+        let basicAuthKey = Buffer.from(`${environment.clientId}:${environment.secretKey}`).toString('base64');
 
         this.authOptions = {
             method: 'POST',
@@ -30,7 +28,7 @@ class Authenticator {
                 'Content-Type':  'application/x-www-form-urlencoded;charset=UTF-8',
                 'Authorization': `Basic ${basicAuthKey}`
             },
-            url: `${environment.twitterApiBaseUrl}/oauth2/token`,
+            url: `${environment.apiBaseUrl}/oauth2/token`,
             data: "grant_type=client_credentials",
             json: true
         };
@@ -41,38 +39,33 @@ class Authenticator {
         return requestConfig.data === this.authOptions.data;
     }
 
-    public getToken() {
+    public async getToken(): Promise<string> {
         if (this.cache.get('authToken')) {
             return Promise.resolve(this.cache.get('authToken'));
         }
-        return this.httpService(this.authOptions).then(
-            response => {
-                this.cache.put('authToken', response.data.access_token, 86400000);
-                return response.data.access_token;
-            }
-        ).catch(error => {
+        try {
+            let response = await this.httpService(this.authOptions);
+            this.cache.put('authToken', response.data.access_token, 86400000);
+            return response.data.access_token;
+        } catch (error) {
             console.log(error);
             return Promise.reject(error);
-        });
+        }
     }
 }
 
 class TokenInterceptorFactory {
     constructor(private auth: Authenticator) {}
 
-    public getInterceptor() {
-        return (requestConfig) => {
+    public getInterceptor(): (any) => Promise<any> {
+        return async (requestConfig) => {
             if (this.auth.isAuthRequest(requestConfig))  {
-                return requestConfig;
+                return Promise.resolve(requestConfig);
             } else {
-                return new Promise((resolve) => {
-                    this.auth.getToken().then(token => {
-                        requestConfig.headers['Authorization'] = `Bearer ${token}`;
-                        return requestConfig;
-                    }).then(tokenizedRequest => resolve(tokenizedRequest));
-                });
+                let token = await this.auth.getToken();
+                requestConfig.headers['Authorization'] = `Bearer ${token}`
+                return requestConfig;
             }
         };
     }
 }
-

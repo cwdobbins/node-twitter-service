@@ -16,18 +16,18 @@ class TwitterServer {
         this.mountRoutes();
     }
 
-    private addCorsHeaders() {
+    private addCorsHeaders(): (req, res, next) => void {
         return (req, res, next) => {
             res.set("Access-Control-Allow-Origin", req.get('Origin'));
             res.set("Access-Control-Allow-Methods", "*");
-	    res.set("Access-Control-Allow-Headers", "*");
-	    next();
+	        res.set("Access-Control-Allow-Headers", "*");
+	        next();
         }
     }
 
     private mountRoutes(): void {
         const router = express.Router();
-	router.all('*', this.addCorsHeaders());
+        router.use(this.addCorsHeaders());
         router.get('/tweets/:username/:count', (req, res) => {
             this.twitter.getTweets(req.params.username, req.params.count || environment.defaultTweetCount)
                 .subscribe(tweets => res.json(tweets));

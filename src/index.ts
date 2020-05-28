@@ -1,12 +1,13 @@
 import twitter from './TwitterServer';
-var argv = require('minimist')(process.argv.slice(2));
+import { environment } from './environments/environment';
 
-const port = argv.port || 8000;
+const args = require('minimist')(process.argv.slice(2));
+
+const port = args.port || environment.port;
 
 twitter.listen(port, (err) => {
     if (err) {
         return console.log(err);
     }
-
     return console.log(`server is listening on ${port}`);
 });

@@ -16,7 +16,7 @@
   "dependencies": {
     "@abraham/reflection": "^0.4.2",
     "@types/node": "^8.10.37",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "express": "^4.16.4",
     "injection-js": "^2.2.1",
     "memory-cache": "^0.2.0",

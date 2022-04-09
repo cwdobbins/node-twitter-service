@@ -20,7 +20,7 @@
     "express": "^4.16.4",
     "injection-js": "^2.2.1",
     "memory-cache": "^0.2.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^5.5.12",
     "tslib": "^1.9.3",
